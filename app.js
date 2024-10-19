@@ -19,7 +19,7 @@ const PAYDISINI_KEY = vars.PAYDISINI_KEY;
 const BOT_TOKEN = vars.BOT_TOKEN;
 const port = vars.PORT || 50123;
 const ADMIN = vars.USER_ID;
-const NAMA_STORE = vars.NAMA_STORE || '@FTVPNSTORES';
+const NAMA_STORE = vars.NAMA_STORE || '@cloudsyncc';
 const bot = new Telegraf(BOT_TOKEN);
 const adminIds = ADMIN;
 console.log('Bot initialized');
@@ -149,7 +149,7 @@ async function sendMainMenu(ctx) {
     }
 
     const messageText = `*Welcome to ${NAMA_STORE},
-Powered by FTVPN* 🚀
+Powered by XyberzVPN* 🚀
 An all-in-one VPN bot for easy and fast VPN service purchase.
 Enjoy the convenience and speed of our VPN service with our bot!
 
