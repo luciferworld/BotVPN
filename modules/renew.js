@@ -5,20 +5,20 @@ const db = new sqlite3.Database('./sellvpn.db');
 async function renewssh(username, exp, limitip, serverId) {
   console.log(`Renewing SSH account for ${username} with expiry ${exp} days, limit IP ${limitip} on server ${serverId}`);
   
-  // Validasi username
+  // Validate username
   if (/\s/.test(username) || /[^a-zA-Z0-9]/.test(username)) {
-    return '❌ Username tidak valid. Mohon gunakan hanya huruf dan angka tanpa spasi.';
+    return '❌ Invalid username. Please use only letters and numbers without spaces.';
   }
 
-  // Ambil domain dari database
+  // Retrieve domain from database
   return new Promise((resolve, reject) => {
     db.get('SELECT * FROM Server WHERE id = ?', [serverId], (err, server) => {
       if (err) {
         console.error('Error fetching server:', err.message);
-        return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+        return resolve('❌ Server not found. Please try again.');
       }
 
-      if (!server) return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+      if (!server) return resolve('❌ Server not found. Please try again.');
 
       const domain = server.domain;
       const auth = server.auth;
@@ -31,26 +31,26 @@ async function renewssh(username, exp, limitip, serverId) {
             const msg = `
 🌟 *RENEW SSH PREMIUM* 🌟
 
-🔹 *Informasi Akun*
+🔹 *Account Information*
 ┌─────────────────────────────
 │ Username: \`${username}\`
-│ Kadaluarsa: \`${sshData.exp}\`
-│ Batas IP: \`${sshData.limitip} IP\`
+│ Expiry: \`${sshData.exp}\`
+│ IP Limit: \`${sshData.limitip} IP\`
 └─────────────────────────────
-✅ Akun ${username} berhasil diperbarui
-✨ Selamat menggunakan layanan kami! ✨
+✅ Account ${username} has been successfully renewed
+✨ Enjoy our services! ✨
 `;
          
               console.log('SSH account renewed successfully');
               return resolve(msg);
             } else {
               console.log('Error renewing SSH account');
-              return resolve(`❌ Terjadi kesalahan: ${response.data.message}`);
+              return resolve(`❌ An error occurred: ${response.data.message}`);
             }
           })
         .catch(error => {
-          console.error('Error saat memperbarui SSH:', error);
-          return resolve('❌ Terjadi kesalahan saat memperbarui SSH. Silakan coba lagi nanti.');
+          console.error('Error while renewing SSH:', error);
+          return resolve('❌ An error occurred while renewing SSH. Please try again later.');
         });
     });
   });
@@ -58,20 +58,20 @@ async function renewssh(username, exp, limitip, serverId) {
 async function renewvmess(username, exp, quota, limitip, serverId) {
     console.log(`Renewing VMess account for ${username} with expiry ${exp} days, quota ${quota} GB, limit IP ${limitip} on server ${serverId}`);
     
-    // Validasi username
+    // Validate username
     if (/\s/.test(username) || /[^a-zA-Z0-9]/.test(username)) {
-      return '❌ Username tidak valid. Mohon gunakan hanya huruf dan angka tanpa spasi.';
+      return '❌ Invalid username. Please use only letters and numbers without spaces.';
     }
   
-    // Ambil domain dari database
+    // Retrieve domain from database
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM Server WHERE id = ?', [serverId], (err, server) => {
         if (err) {
           console.error('Error fetching server:', err.message);
-          return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+          return resolve('❌ Server not found. Please try again.');
         }
   
-        if (!server) return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+        if (!server) return resolve('❌ Server not found. Please try again.');
   
         const domain = server.domain;
         const auth = server.auth;
@@ -84,26 +84,26 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
               const msg = `
   🌟 *RENEW VMESS PREMIUM* 🌟
   
-  🔹 *Informasi Akun*
+  🔹 *Account Information*
   ┌─────────────────────────────
   │ Username: \`${username}\`
-  │ Kadaluarsa: \`${vmessData.exp}\`
-  │ Kuota: \`${vmessData.quota}\`
-  │ Batas IP: \`${vmessData.limitip} IP\`
+  │ Expiry: \`${vmessData.exp}\`
+  │ Quota: \`${vmessData.quota}\`
+  │ IP Limit: \`${vmessData.limitip} IP\`
   └─────────────────────────────
-  ✅ Akun ${username} berhasil diperbarui
-  ✨ Selamat menggunakan layanan kami! ✨
+  ✅ Account ${username} has been successfully renewed
+  ✨ Enjoy our services! ✨
   `;
                 console.log('VMess account renewed successfully');
                 return resolve(msg);
               } else {
                 console.log('Error renewing VMess account');
-                return resolve(`❌ Terjadi kesalahan: ${response.data.message}`);
+                return resolve(`❌ An error occurred: ${response.data.message}`);
               }
             })
           .catch(error => {
-            console.error('Error saat memperbarui VMess:', error);
-            return resolve('❌ Terjadi kesalahan saat memperbarui VMess. Silakan coba lagi nanti.');
+            console.error('Error while renewing VMess:', error);
+            return resolve('❌ An error occurred while renewing VMess. Please try again later.');
           });
       });
     });
@@ -111,20 +111,20 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
   async function renewvless(username, exp, quota, limitip, serverId) {
     console.log(`Renewing VLess account for ${username} with expiry ${exp} days, quota ${quota} GB, limit IP ${limitip} on server ${serverId}`);
     
-    // Validasi username
+    // Validate username
     if (/\s/.test(username) || /[^a-zA-Z0-9]/.test(username)) {
-      return '❌ Username tidak valid. Mohon gunakan hanya huruf dan angka tanpa spasi.';
+      return '❌ Invalid username. Please use only letters and numbers without spaces.';
     }
   
-    // Ambil domain dari database
+    // Retrieve domain from database
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM Server WHERE id = ?', [serverId], (err, server) => {
         if (err) {
           console.error('Error fetching server:', err.message);
-          return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+          return resolve('❌ Server not found. Please try again.');
         }
   
-        if (!server) return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+        if (!server) return resolve('❌ Server not found. Please try again.');
   
         const domain = server.domain;
         const auth = server.auth;
@@ -137,27 +137,27 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
               const msg = `
   🌟 *RENEW VLESS PREMIUM* 🌟
   
-  🔹 *Informasi Akun*
+  🔹 *Account Information*
   ┌─────────────────────────────
   │ Username: \`${username}\`
-  │ Kadaluarsa: \`${vlessData.exp}\`
-  │ Kuota: \`${vlessData.quota}\`
-  │ Batas IP: \`${vlessData.limitip} IP\`
+  │ Expiry: \`${vlessData.exp}\`
+  │ Quota: \`${vlessData.quota}\`
+  │ IP Limit: \`${vlessData.limitip} IP\`
   └─────────────────────────────
-  ✅ Akun ${username} berhasil diperbarui
-  ✨ Selamat menggunakan layanan kami! ✨
+  ✅ Account ${username} has been successfully renewed
+  ✨ Enjoy our services! ✨
   `;
            
                 console.log('VLess account renewed successfully');
                 return resolve(msg);
               } else {
                 console.log('Error renewing VLess account');
-                return resolve(`❌ Terjadi kesalahan: ${response.data.message}`);
+                return resolve(`❌ An error occurred: ${response.data.message}`);
               }
             })
           .catch(error => {
-            console.error('Error saat memperbarui VLess:', error);
-            return resolve('❌ Terjadi kesalahan saat memperbarui VLess. Silakan coba lagi nanti.');
+            console.error('Error while renewing VLess:', error);
+            return resolve('❌ An error occurred while renewing VLess. Please try again later.');
           });
       });
     });
@@ -165,20 +165,20 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
   async function renewtrojan(username, exp, quota, limitip, serverId) {
     console.log(`Renewing Trojan account for ${username} with expiry ${exp} days, quota ${quota} GB, limit IP ${limitip} on server ${serverId}`);
     
-    // Validasi username
+    // Validate username
     if (/\s/.test(username) || /[^a-zA-Z0-9]/.test(username)) {
-      return '❌ Username tidak valid. Mohon gunakan hanya huruf dan angka tanpa spasi.';
+      return '❌ Invalid username. Please use only letters and numbers without spaces.';
     }
   
-    // Ambil domain dari database
+    // Retrieve domain from database
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM Server WHERE id = ?', [serverId], (err, server) => {
         if (err) {
           console.error('Error fetching server:', err.message);
-          return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+          return resolve('❌ Server not found. Please try again.');
         }
   
-        if (!server) return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+        if (!server) return resolve('❌ Server not found. Please try again.');
   
         const domain = server.domain;
         const auth = server.auth;
@@ -191,27 +191,27 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
               const msg = `
   🌟 *RENEW TROJAN PREMIUM* 🌟
   
-  🔹 *Informasi Akun*
+  🔹 *Account Information*
   ┌─────────────────────────────
   │ Username: \`${username}\`
-  │ Kadaluarsa: \`${trojanData.exp}\`
-  │ Kuota: \`${trojanData.quota}\`
-  │ Batas IP: \`${trojanData.limitip} IP\`
+  │ Expiry: \`${trojanData.exp}\`
+  │ Quota: \`${trojanData.quota}\`
+  │ IP Limit: \`${trojanData.limitip} IP\`
   └─────────────────────────────
-  ✅ Akun ${username} berhasil diperbarui
-  ✨ Selamat menggunakan layanan kami! ✨
+  ✅ Account ${username} has been successfully renewed
+  ✨ Enjoy our services! ✨
   `;
            
                 console.log('Trojan account renewed successfully');
                 return resolve(msg);
               } else {
                 console.log('Error renewing Trojan account');
-                return resolve(`❌ Terjadi kesalahan: ${response.data.message}`);
+                return resolve(`❌ An error occurred: ${response.data.message}`);
               }
             })
           .catch(error => {
-            console.error('Error saat memperbarui Trojan:', error);
-            return resolve('❌ Terjadi kesalahan saat memperbarui Trojan. Silakan coba lagi nanti.');
+            console.error('Error while renewing Trojan:', error);
+            return resolve('❌ An error occurred while renewing Trojan. Please try again later.');
           });
       });
     });
@@ -219,20 +219,20 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
   async function renewshadowsocks(username, exp, quota, limitip, serverId) {
     console.log(`Renewing Shadowsocks account for ${username} with expiry ${exp} days, quota ${quota} GB, limit IP ${limitip} on server ${serverId}`);
     
-    // Validasi username
+    // Validate username
     if (/\s/.test(username) || /[^a-zA-Z0-9]/.test(username)) {
-      return '❌ Username tidak valid. Mohon gunakan hanya huruf dan angka tanpa spasi.';
+      return '❌ Invalid username. Please use only letters and numbers without spaces.';
     }
   
-    // Ambil domain dari database
+    // Retrieve domain from database
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM Server WHERE id = ?', [serverId], (err, server) => {
         if (err) {
           console.error('Error fetching server:', err.message);
-          return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+          return resolve('❌ Server not found. Please try again.');
         }
   
-        if (!server) return resolve('❌ Server tidak ditemukan. Silakan coba lagi.');
+        if (!server) return resolve('❌ Server not found. Please try again.');
   
         const domain = server.domain;
         const auth = server.auth;
@@ -245,27 +245,27 @@ async function renewvmess(username, exp, quota, limitip, serverId) {
               const msg = `
   🌟 *RENEW SHADOWSOCKS PREMIUM* 🌟
   
-  🔹 *Informasi Akun*
+  🔹 *Account Information*
   ┌─────────────────────────────
   │ Username: \`${username}\`
-  │ Kadaluarsa: \`${vmessData.exp}\`
-  │ Kuota: \`${vmessData.quota}\`
-  │ Batas IP: \`${shadowsocksData.limitip} IP\`
+  │ Expiry: \`${vmessData.exp}\`
+  │ Quota: \`${vmessData.quota}\`
+  │ IP Limit: \`${shadowsocksData.limitip} IP\`
   └─────────────────────────────
-  ✅ Akun ${username} berhasil diperbarui
-  ✨ Selamat menggunakan layanan kami! ✨
+  ✅ Account ${username} has been successfully renewed
+  ✨ Enjoy our services! ✨
   `;
            
                 console.log('Shadowsocks account renewed successfully');
                 return resolve(msg);
               } else {
                 console.log('Error renewing Shadowsocks account');
-                return resolve(`❌ Terjadi kesalahan: ${response.data.message}`);
+                return resolve(`❌ An error occurred: ${response.data.message}`);
               }
             })
           .catch(error => {
-            console.error('Error saat memperbarui Shadowsocks:', error);
-            return resolve('❌ Terjadi kesalahan saat memperbarui Shadowsocks. Silakan coba lagi nanti.');
+            console.error('Error while renewing Shadowsocks:', error);
+            return resolve('❌ An error occurred while renewing Shadowsocks. Please try again later.');
           });
       });
     });
