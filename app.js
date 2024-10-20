@@ -790,8 +790,8 @@ async function startSelectServer(ctx, action, type, page = 0) {
                 const pricePer30Days = server.harga * 30;
                 const isFull = server.total_create_akun >= server.batas_create_akun;
                 return `🌐 *${server.nama_server}*\n` +
-                    `💰 Price per day: Rp${server.harga}\n` +
-                    `📅 Price per 30 days: Rp${pricePer30Days}\n` +
+                    `💰 Price per day: Rs${server.harga}\n` +
+                    `📅 Price per 30 days: Rs${pricePer30Days}\n` +
                     `📊 Quota: ${server.quota}GB\n` +
                     `🔢 IP Limit: ${server.iplimit} IP\n` +
                     (isFull ? `⚠️ *Server Full*` : `👥 Total Create Account: ${server.total_create_akun}/${server.batas_create_akun}`);
@@ -1069,7 +1069,7 @@ bot.on('text', async (ctx) => {
                     console.error('Error while adding server:', err.message);
                     ctx.reply('❌ *An error occurred while adding a new server.*', { parse_mode: 'Markdown' });
                 } else {
-                    ctx.reply(`✅ *New server with domain ${domain} has been successfully added.*\n\n📄 *Server Details:*\n- Domain: ${domain}\n- Auth: ${auth}\n- Server Name: ${nama_server}\n- Quota: ${quota}\n- IP Limit: ${iplimit}\n- Account Creation Limit: ${batas_create_akun}\n- Price: Rp ${harga}`, { parse_mode: 'Markdown' });
+                    ctx.reply(`✅ *New server with domain ${domain} has been successfully added.*\n\n📄 *Server Details:*\n- Domain: ${domain}\n- Auth: ${auth}\n- Server Name: ${nama_server}\n- Quota: ${quota}\n- IP Limit: ${iplimit}\n- Account Creation Limit: ${batas_create_akun}\n- Price: Rs ${harga}`, { parse_mode: 'Markdown' });
                 }
             });
         } catch (error) {
@@ -1267,7 +1267,7 @@ bot.action('cek_saldo', async (ctx) => {
         });
 
         if (row) {
-            await ctx.reply(`💳 *Your current balance is:* Rp${row.saldo}\n🆔 *Your ID:* ${userId}`, { parse_mode: 'Markdown' });
+            await ctx.reply(`💳 *Your current balance is:* Rs${row.saldo}\n🆔 *Your ID:* ${userId}`, { parse_mode: 'Markdown' });
         } else {
             await ctx.reply('⚠️ *You do not have a balance yet. Please add balance first.*', { parse_mode: 'Markdown' });
         }
@@ -1969,7 +1969,7 @@ bot.action(/server_detail_(\d+)/, async (ctx) => {
             `📶 *IP Limit:* \`${server.iplimit}\`\n` +
             `🔢 *Account Creation Limit:* \`${server.batas_create_akun}\`\n` +
             `📋 *Total Account Creation:* \`${server.total_create_akun}\`\n` +
-            `💵 *Price:* \`Rp ${server.harga}\`\n\n`;
+            `💵 *Price:* \`Rs ${server.harga}\`\n\n`;
 
         await ctx.reply(serverDetails, { parse_mode: 'Markdown' });
     } catch (error) {
@@ -2041,7 +2041,7 @@ async function handleDepositState(ctx, userId, data) {
     }
 
     global.depositState[userId].amount = currentAmount;
-    const newMessage = `💰 *Please enter the nominal amount that you want to add to your account:*\n\nCurrent amount: *Rp ${currentAmount}*`;
+    const newMessage = `💰 *Please enter the nominal amount that you want to add to your account:*\n\nCurrent amount: *Rs ${currentAmount}*`;
     if (newMessage !== ctx.callbackQuery.message.text) {
         await ctx.editMessageText(newMessage, {
             reply_markup: { inline_keyboard: keyboard_nomor() },
@@ -2062,7 +2062,7 @@ async function handleAddSaldo(ctx, userStateData, data) {
 
         try {
             await updateUserSaldo(userStateData.userId, currentSaldo);
-            ctx.reply(`✅ *User balance has been successfully added.*\n\n📄 *Balance Details:*\n- Balance Amount: *Rp ${currentSaldo}*`, { parse_mode: 'Markdown' });
+            ctx.reply(`✅ *User balance has been successfully added.*\n\n📄 *Balance Details:*\n- Balance Amount: *Rs ${currentSaldo}*`, { parse_mode: 'Markdown' });
         } catch (err) {
             ctx.reply('❌ *An error occurred while adding the user balance.*', { parse_mode: 'Markdown' });
         }
@@ -2128,7 +2128,7 @@ async function handleEditHarga(ctx, userStateData, data) {
         }
         try {
             await updateServerField(userStateData.serverId, hargaBaru, 'UPDATE Server SET harga = ? WHERE id = ?');
-            ctx.reply(`✅ *The server price has been successfully updated.*\n\n📄 *Server Details:*\n- New Price: *Rp ${hargaBaru}*`, { parse_mode: 'Markdown' });
+            ctx.reply(`✅ *The server price has been successfully updated.*\n\n📄 *Server Details:*\n- New Price: *Rs ${hargaBaru}*`, { parse_mode: 'Markdown' });
         } catch (err) {
             ctx.reply('❌ *An error occurred while updating the server price.*', { parse_mode: 'Markdown' });
         }
@@ -2146,7 +2146,7 @@ async function handleEditHarga(ctx, userStateData, data) {
     }
 
     userStateData.amount = currentAmount;
-    const newMessage = `💰 *Please enter the new server price:*\n\nCurrent amount: *Rp ${currentAmount}*`;
+    const newMessage = `💰 *Please enter the new server price:*\n\nCurrent amount: *Rs ${currentAmount}*`;
     if (newMessage !== ctx.callbackQuery.message.text) {
         await ctx.editMessageText(newMessage, {
             reply_markup: { inline_keyboard: keyboard_nomor() },
@@ -2275,10 +2275,10 @@ async function processDeposit(ctx, amount) {
             const qrcodeUrl = data.qrcode_url;
 
             await ctx.replyWithPhoto(qrcodeUrl, {
-                caption: `🌟 *Your Deposit Information* 🌟\n\n💼 *Amount:* Rp ${amount}\n🎉 *Please complete your payment to enjoy the new balance!*`,
+                caption: `🌟 *Your Deposit Information* 🌟\n\n💼 *Amount:* Rs ${amount}\n🎉 *Please complete your payment to enjoy the new balance!*`,
                 parse_mode: 'Markdown'
             });
-            console.log(`✅ Deposit request successful for user ${userId}, amount: Rp ${amount}`);
+            console.log(`✅ Deposit request successful for user ${userId}, amount: Rs ${amount}`);
         } else {
             console.error('⚠️ Deposit request failed:', response.data.message);
             await ctx.reply(`⚠️ *Deposit request failed:* ${response.data.message}`, { parse_mode: 'Markdown' });
@@ -2374,7 +2374,7 @@ app.post('/callback/paydisini', async (req, res) => {
                         return res.status(500).send('⚠️ Error fetching latest balance');
                     }
                     const newSaldo = row.saldo;
-                    const message = `✅ Deposit successful!\n\n💰 Amount: Rp ${amount}\n💵 Current balance: Rp ${newSaldo}`;
+                    const message = `✅ Deposit successful!\n\n💰 Amount: Rs ${amount}\n💵 Current balance: Rs ${newSaldo}`;
 
                     const telegramUrl = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
                     axios.post(telegramUrl, {
